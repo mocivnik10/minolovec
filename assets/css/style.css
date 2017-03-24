@@ -1,0 +1,62 @@
+body#my_body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+/*--------- Margin and Paddings shortcuts ---------*/
+.mt-s {margin-top: 20px;}
+.mt-m {margin-top: 50px;}
+.mt-l {margin-top: 80px;}
+.mb-s {margin-bottom: 20px;}
+.mb-m {margin-bottom: 50px;}
+.mb-l {margin-bottom: 80px;}
+.pt-s {padding-top: 20px;}
+.pt-m {padding-top: 50px;}
+.pt-l {padding-top: 80px;}
+.pb-s {padding-bottom: 20px;}
+.pb-m {padding-bottom: 50px;}
+.pb-l {padding-bottom: 80px;}
+
+/*--------- end ---------*/
+
+
+/*--------- Table for the game ---------*/
+.minesweeper_field_table, td, th {
+  border: 1px solid black;
+  margin: 0 auto;
+}
+.minesweeper_field_table td {
+  height: 49px;
+  width: 49px;
+}
+/*--------- end ---------*/
+
+/*--------- icons ---------*/
+.fa-circle {
+  color: yellow !important;
+}
+.fa-inverse {
+  color: black !important;
+}
+/*--------- end ---------*/
+
+/*--------- General ---------*/
+#main_content .no-padding {
+  padding: 0;
+}
+.no-margin {
+  margin: 0;
+}
+.game_header {
+  border: 1px solid black;
+  padding: 20px;
+}
+.smiley_box {
+	border: 1px solid black;
+	padding: 10px;
+}
+.counter_boxes {
+  border: 1px solid black;
+  padding: 10px;
+  font-size: 28px;
+}
+/*--------- end ---------*/
