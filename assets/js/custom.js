@@ -47,7 +47,6 @@ function randomBombs() {
   while (i<numberOfRandomIndexes) {
     tmpIndexNumber1 = Math.floor(Math.random() * (7 - 0 + 1)) + 0;
     tmpIndexNumber2 = Math.floor(Math.random() * (7 - 0 + 1)) + 0;
-    //console.log("Bomba "+ i + "  Stevilk1: " + tmpIndexNumber1 + ", " + "stevilka2: " + tmpIndexNumber2);
     if (gameFieldArray[tmpIndexNumber1][tmpIndexNumber2] !== "bomb") {
       gameFieldArray[tmpIndexNumber1][tmpIndexNumber2] = "bomb";
       row = tmpIndexNumber1 + 1;
@@ -88,12 +87,9 @@ function randomNumberOfBombs() {
           if ((isIndexInArray(x, y-1)) && (gameFieldArray[x][y-1] == "bomb")) {
             tmpCountBombs ++;
           }
-          //console.log("Okolji polja: " + x + y + " je " + tmpCountBombs + " bomb");
           row = x + 1;
           col = y + 1;
           $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").prepend(tmpCountBombs);
-        } else {
-          //console.log("Na polju: " + x + y + " je bomba");
         }
       }
     }
