@@ -51,7 +51,7 @@ function randomBombs() {
       gameFieldArray[tmpIndexNumber1][tmpIndexNumber2] = "bomb";
       row = tmpIndexNumber1 + 1;
       col = tmpIndexNumber2 + 1;
-      $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").prepend('<i class="fa fa-bomb" aria-hidden="true"></i>');
+      $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children().prepend('<i class="fa fa-bomb" aria-hidden="true"></i>');
       i++;
     }
   }
@@ -89,7 +89,7 @@ function randomNumberOfBombs() {
           }
           row = x + 1;
           col = y + 1;
-          $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").prepend(tmpCountBombs);
+          $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children().prepend(tmpCountBombs);
         }
       }
     }

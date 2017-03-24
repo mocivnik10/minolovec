@@ -17,8 +17,7 @@
     </section>
     <section id="main_content" class="container mt-m">
       <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 no-padding">
+        <div class="col-md-12 text-center">
           <div class="game_header text-center mb-s">
             <div class="row">
               <div class="col-md-4">
@@ -39,10 +38,97 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4 no-padding">
           <table class="text-center">
-            <tbody class="minesweeper_field_table">
+            <tbody class="minesweeper_field_table" id="originalTable">
               <tr>
-                <td></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+              </tr>
+              <tr>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+              </tr>
+              <tr>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+              </tr>
+              <tr>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+              </tr>
+              <tr>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+              </tr>
+              <tr>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+              </tr>
+              <tr>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+              </tr>
+              <tr>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+                <td class="table-background"><span class="table-element"></span></td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <table class="text-center">
+            <tbody class="minesweeper_field_table cover-table">
+              <tr>
+                <td>asd</td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -122,12 +208,18 @@
                 <td></td>
               </tr>
             </tbody>
-          </table>
+          </table> -->
         </div>
         <div class="col-md-4"></div>
       </div>
     </section>
     <script type="text/javascript">
+    $("#originalTable").click(function(event) {
+      var clicked = $(event.target);
+      //clicked.children().css("visibility", "visible");
+      clicked.children().removeClass('table-element');
+      clicked.removeClass('table-background');
+    });
     </script>
   </body>
 </html>
