@@ -28,19 +28,13 @@ body#my_body {
   height: 49px;
   width: 49px;
 }
-.table-element {
+/*.table-element {
 	visibility: hidden;
 }
 .table-background {
 	background-color: lightblue;
-}
-/*.cover-table {
-		position: absolute;
-    left: 0px;
-    top: 0px;
-    z-index: -1;
-    background-color: red;
 }*/
+
 
 /*--------- end ---------*/
 
