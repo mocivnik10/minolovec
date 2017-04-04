@@ -70,6 +70,7 @@ function createHTMLTable() {
           td.id = x + "_" + y;
           // Dodaj event click ki bo sprozil klic funkcije gameLogic() na td
           td.addEventListener("click", gameLogic);
+          //td.addEventListener("contextmenu", setTheFlag);
           span.className = "table-element";
           tr.appendChild(td);
           td.appendChild(span);
@@ -95,49 +96,49 @@ function debugModeBombs() {
   gameFieldArray[x][y] = "bomb";
   row = x + 1;
   col = y + 1;
-  tmpBombField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
+  var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 3;
   y = 4;
   gameFieldArray[x][y] = "bomb";
   row = x + 1;
   col = y + 1;
-  tmpBombField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
+  var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 2;
   y = 6;
   gameFieldArray[x][y] = "bomb";
   row = x + 1;
   col = y + 1;
-  tmpBombField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
+  var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
-  x = 1;
-  y = 4;
+  x = 4;
+  y = 0;
   gameFieldArray[x][y] = "bomb";
   row = x + 1;
   col = y + 1;
-  tmpBombField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
+  var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 1;
   y = 5;
   gameFieldArray[x][y] = "bomb";
   row = x + 1;
   col = y + 1;
-  tmpBombField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
+  var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 6;
   y = 3;
   gameFieldArray[x][y] = "bomb";
   row = x + 1;
   col = y + 1;
-  tmpBombField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
+  var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 4;
   y = 2;
   gameFieldArray[x][y] = "bomb";
   row = x + 1;
   col = y + 1;
-  tmpBombField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
+  var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
 }
 
@@ -246,137 +247,44 @@ function gameLogic() {
     console.log("clicked: " + x + " " + y);
     $(this).removeClass('table-background');
     $(this).find("span").removeClass('table-element');
-    checkTheNeighbours(Number(x), Number(y));
-    checkTheNeighbours(Number(x+1), Number(y));
-    checkTheNeighbours(Number(x+1), Number(y+1));
-    checkTheNeighbours(Number(x), Number(y+1));
-    checkTheNeighbours(Number(x-1), Number(y+1));
-    checkTheNeighbours(Number(x+1), Number(y-1));
-    checkTheNeighbours(Number(x-1), Number(y-1));
-    checkTheNeighbours(Number(x), Number(y-1));
-    checkTheNeighbours(Number(x-1), Number(y));
+    findingNeighbors(Number(x), Number(y));
   }
 }
 
-function checkTheNeighbours(x, y) {
-    //console.log("In function: " + x + " " + y);
-    if (!isIndexInArray(x, y)) {
-      return;
-    }
-    gameFieldVisited[x][y] = true;
-    row = x + 1;
-    col = y + 1;
+function findingNeighbors(i, j) {
+  var rowLimit = gameFieldArray.length-1;
+  var columnLimit = gameFieldArray[0].length-1;
+  if (!isIndexInArray(i, j)) {
+    return;
+  }
+  console.log("Iscem sosede za: " + i + " " + j);
+  gameFieldVisited[i][j] = true;
 
-    if ((isIndexInArray(x-1, y-1)) && (gameFieldArray[x-1][y-1] !== "bomb")) {
-      if (gameFieldVisited[x-1][y-1] != true) {
-        var tmpField = $("#" + (x-1) + "_" + (y-1));
-        if (gameFieldArray[x-1][y-1] == "number") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-        } else if (gameFieldArray[x-1][y-1] == "empty") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-          console.log("gremo v: TL", x-1, y-1, "iz ", x, y);
-          checkTheNeighbours(x-1, y-1);
-        }
-      }
-    }
-    if ((isIndexInArray(x-1, y)) && (gameFieldArray[x-1][y] != "bomb")) {
-      if (gameFieldVisited[x-1][y] != true) {
-        var tmpField = $("#" + (x-1) + "_" + y);
-        if (gameFieldArray[x-1][y] == "number") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-        } else if (gameFieldArray[x-1][y] == "empty") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-          console.log("gremo v: T", x-1, y, "iz ", x, y);
-          checkTheNeighbours(x-1, y);
-        }
-      }
-    }
-    if ((isIndexInArray(x-1, y+1)) && (gameFieldArray[x-1][y+1] != "bomb")) {
-      if (gameFieldVisited[x-1][y+1] != true) {
-        var tmpField = $("#" + (x-1) + "_" + (y+1));
-        if (gameFieldArray[x-1][y+1] == "number") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-        } else if (gameFieldArray[x-1][y+1] == "empty") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-          console.log("gremo v: TR", x-1, y+1, "iz ", x, y);
-          checkTheNeighbours(x-1, y+1);
-        }
-      }
-    }
-    if ((isIndexInArray(x, y+1)) && (gameFieldArray[x][y+1] != "bomb")) {
-      if (gameFieldVisited[x][y+1] != true) {
-        var tmpField = $("#" + x + "_" + (y+1));
-        if (gameFieldArray[x][y+1] == "number") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-        } else if (gameFieldArray[x][y+1] == "empty") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-          console.log("gremo v: R", x, y+1, "iz ", x, y);
-          checkTheNeighbours(x, y+1);
-        }
-      }
-    }
-    if ((isIndexInArray(x+1, y+1)) && (gameFieldArray[x+1][y+1] != "bomb")) {
-      if (gameFieldVisited[x+1][y+1] != true) {
-        var tmpField = $("#" + (x+1) + "_" + (y+1));
-        if (gameFieldArray[x+1][y+1] == "number") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-        } else if (gameFieldArray[x+1][y+1] == "empty") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-          console.log("gremo v: DR", x+1, y+1, "iz ", x, y);
-          checkTheNeighbours(x+1, y+1);
-        }
-      }
-    }
-    if ((isIndexInArray(x+1, y)) && (gameFieldArray[x+1][y] != "bomb")) {
-      if (gameFieldVisited[x+1][y] != true) {
-        var tmpField = $("#" + (x+1) + "_" + y);
-        if (gameFieldArray[x+1][y] == "number") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-        } else if (gameFieldArray[x+1][y] == "empty") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-          console.log("gremo v: D", x+1, y, "iz ", x, y);
-          checkTheNeighbours(x+1, y);
-        }
-      }
-    }
-    if ((isIndexInArray(x+1, y-1)) && (gameFieldArray[x+1][y-1] != "bomb")) {
-      if (gameFieldVisited[x+1][y-1] != true) {
-        var tmpField = $("#" + (x+1) + "_" + (y-1));
-        if (gameFieldArray[x+1][y-1] == "number") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-        } else if (gameFieldArray[x+1][y-1] == "empty") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-          console.log("gremo v: DL", x+1, y-1, "iz ", x, y);
-          checkTheNeighbours(x+1, y-1);
-        }
-      }
-    }
-    if ((isIndexInArray(x, y-1)) && (gameFieldArray[x][y-1] != "bomb")) {
-      if (gameFieldVisited[x][y-1] != true) {
-        var tmpField = $("#" + x + "_" + (y-1));
-        if (gameFieldArray[x][y-1] == "number") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-        } else if (gameFieldArray[x][y-1] == "empty") {
-          tmpField.removeClass('table-background');
-          tmpField.find("span").removeClass('table-element');
-          console.log("gremo v: L", x, y-1, "iz ", x, y);
-          checkTheNeighbours(x, y-1);
+  for(var x = Math.max(0, i-1); x <= Math.min(i+1, rowLimit); x++) {
+    for(var y = Math.max(0, j-1); y <= Math.min(j+1, columnLimit); y++) {
+      if(x !== i || y !== j) {
+        if (gameFieldVisited[x][y] != true) {
+          var tmpField = $("#" + (x) + "_" + (y));
+          if (gameFieldArray[x][y] == "number") {
+            tmpField.removeClass('table-background');
+            tmpField.find("span").removeClass('table-element');
+          } else if (gameFieldArray[x][y] == "empty") {
+            tmpField.removeClass('table-background');
+            tmpField.find("span").removeClass('table-element');
+            findingNeighbors(x, y);
+          }
         }
       }
     }
   }
+}
+
+
+//// function setTheFlag() {
+//   clickedPositionArr = $(this).attr("id").split("_");
+//   x = clickedPositionArr[0];
+//   y = clickedPositionArr[1];
+//   var flagField = $("#" + (x) + "_" + (y));
+//   gameFieldVisited[x][y] = true;
+//   flagField.prepend('<i class="fa fa-flag" aria-hidden="true"></i>');
+// }
