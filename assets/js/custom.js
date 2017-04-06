@@ -1,3 +1,4 @@
+// inicializacija igralnega polja
 var gameFieldArray = [ [ [], [], [], [], [], [], [], [] ],
                        [ [], [], [], [], [], [], [], [] ],
                        [ [], [], [], [], [], [], [], [] ],
@@ -6,7 +7,7 @@ var gameFieldArray = [ [ [], [], [], [], [], [], [], [] ],
                        [ [], [], [], [], [], [], [], [] ],
                        [ [], [], [], [], [], [], [], [] ],
                        [ [], [], [], [], [], [], [], [] ] ];
-
+// inicializacija polja za spremlanje odprtih/zaprtih polj
 var gameFieldVisited = [ [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ],
@@ -15,7 +16,7 @@ var gameFieldVisited = [ [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ] ];
-
+// inicializacija polja za spremljanje polj z zastavico
 var gameFieldFlaged = [ [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ],
@@ -29,6 +30,7 @@ var gameFieldFlaged = [ [ [], [], [], [], [], [], [], [] ],
 var debugMode = false;
 var gameStarted = false;
 
+// Nastavi vsa polja v arrayih na false
 for (var i = 0; i < gameFieldVisited.length; i++) {
   for (var y = 0; y < gameFieldVisited[i].length; y++) {
     gameFieldVisited[i][y] = false;
@@ -42,6 +44,7 @@ for (var i = 0; i < gameFieldFlaged.length; i++) {
 
 $(document).ready(function () {
   $("#start_game, #start_game_from_modal").click(function () {
+      // Na click zazeni igro - ce je gameStarted false
       if (!gameStarted) {
         gameStarted = true;
         $("#seconds").timer();
@@ -74,8 +77,9 @@ function createHTMLTable() {
           // vedeli na kateri celici smo oz katero celico je uporabnik kliknil
           td.className = "table-background";
           td.id = x + "_" + y;
-          // Dodaj event click ki bo sprozil klic funkcije gameLogic() na td
+          // Dodaj event click(levi) ki bo sprozil klic funkcije gameLogic() na td
           td.addEventListener("click", gameLogic);
+          // Dodaj event contextmenu(desni click) ki bo sprozil klic funkcije setTheFlag na td
           td.addEventListener("contextmenu", setTheFlag);
           span.className = "table-element";
           tr.appendChild(td);
@@ -97,6 +101,7 @@ function isIndexInArray(x, y) {
 }
 
 function debugModeBombs() {
+  // Postavitev bomb za debugg mode
   x = 0;
   y = 3;
   gameFieldArray[x][y] = "bomb";
@@ -233,54 +238,64 @@ function numberOfBombs() {
 }
 
 function gameLogic() {
-  console.log($(this).attr("id").split("_"));
+  // V spremenljivko clickedPositionArr shrani x in y v array glede na ID atribut
   clickedPositionArr = $(this).attr("id").split("_");
+  // inicializacija x in y
   x = clickedPositionArr[0];
   y = clickedPositionArr[1];
   if (gameFieldFlaged[x][y] == true) {
+    // Onemogoci klik na polje z zastavico
     return;
   } else {
+    // Nastavi kliknjeno polje kot obiskano/odkrito
     gameFieldVisited[x][y] = true;
     row = x + 1;
     col = y + 1;
     if (gameFieldArray[x][y] == "bomb") {
+      // Ce je kliknjeno polje bomba: Odkrij polje, ga pobarvaj rdece, Ustavi timer, Ter koncaj igro - prikazi modal window
       $(this).removeClass('table-background');
       $(this).find("span").removeClass('table-element');
       $(this).css('background-color', 'red');
       $("#seconds").timer("pause");
       $('#gameOverModal').modal('show');
-      console.log("game over");
     } else if (gameFieldArray[x][y] == "number") {
+      // Ce je kliknjeno polje stevilke - potem to polje odkrij
       $(this).removeClass('table-background');
       $(this).find("span").removeClass('table-element');
-      console.log("number clicked");
     } else {
-      console.log("clicked: " + x + " " + y);
+      // Ceje kliknjeno prazno polje ga odkrij in pozeni funkcijo clearEmptyFields, ki bo odkrila se ostala prazna polja
       $(this).removeClass('table-background');
       $(this).find("span").removeClass('table-element');
       clearEmptyFields(Number(x), Number(y));
     }
   }
+  // Pozeni metodo ki preverja ali je uporabnik zmagal
   checkWin();
 }
 
 function clearEmptyFields(i, j) {
+  // inicializacija za max index vrstice in stolpca
   var rowLimit = gameFieldArray.length-1;
   var columnLimit = gameFieldArray[0].length-1;
+  // Ce je index "out of bound" se ustavi tukaj.
   if (!isIndexInArray(i, j)) {
     return;
   }
   gameFieldVisited[i][j] = true;
+  // Algoritem za preverjanje 8 sosedov v matriki oz 2d arrayu
   for(var x = Math.max(0, i-1); x <= Math.min(i+1, rowLimit); x++) {
     for(var y = Math.max(0, j-1); y <= Math.min(j+1, columnLimit); y++) {
       if(x !== i || y !== j) {
         if (gameFieldVisited[x][y] != true) {
+          // inicializacija polja/soseda
           var tmpField = $("#" + (x) + "_" + (y));
           if (gameFieldArray[x][y] == "number" && gameFieldFlaged[x][y] !== true) {
+            // Ce je polje, ki se trenutno preverja stevilka in na tem polju ni zastavice potem: Nastavi polje kot obiskano in ga odrij
             gameFieldVisited[x][y] = true;
             tmpField.removeClass('table-background');
             tmpField.find("span").removeClass('table-element');
           } else if (gameFieldArray[x][y] == "empty" && gameFieldFlaged[x][y] !== true) {
+            // Ce je polje, ki se trenutno preverja prazno in na tem polju ni zastavice potem: Polje odkrij, in rekurzivno klici metodo clearEmptyFields.
             tmpField.removeClass('table-background');
             tmpField.find("span").removeClass('table-element');
             clearEmptyFields(x, y);
@@ -296,14 +311,18 @@ function setTheFlag() {
   clickedPositionArr = $(this).attr("id").split("_");
   x = clickedPositionArr[0];
   y = clickedPositionArr[1];
+  // inicializacija kliknjenega polja
   var flagField = $("#" + (x) + "_" + (y));
   if (gameFieldVisited[x][y] !== true) {
+  // Prepreci postavitev zastavice na odprta polja
     if (gameFieldFlaged[x][y] == true) {
+      // Ce je na polju ze zastavica potem: Nastavi polje z zastavico na false in odstrani zastavico
       gameFieldFlaged[x][y] = false;
       flagCounter++;
       $(".flags_counter").children().text(flagCounter);
       flagField.find('.flag-field-selector').remove();
     } else {
+      // Ce  na polju se ni zastavice potem: Nastavi polje z zastavico na true in dodaj zastavico
       gameFieldFlaged[x][y] = true;
       flagCounter--;
       $(".flags_counter").children().text(flagCounter);
@@ -315,6 +334,7 @@ function setTheFlag() {
 }
 
 function checkWin() {
+  // Inicializacija stevila bomb, stevila praznih polj, stevila zastavic na "pravih mestih" ter stevila odprtih polj
   var numberOfBombs = 0;
   var numberOfEmptyFields = 0;
   var countFlagedBombs = 0;
@@ -343,17 +363,16 @@ function checkWin() {
       }
     }
   }
-  console.log("Bombs: " + numberOfBombs);
-  console.log("Empty fields: " + numberOfEmptyFields);
-  console.log("Flaged: " + countFlagedBombs);
-  console.log("Revealed: " + countRevealedFields);
+  // Ce je stevilo bomb enako stevilu zastavic na bombah IN stevilo praznih polj enako stevilu odkritih polj potem je uporabnik zmagal igro
   if (numberOfBombs == countFlagedBombs && numberOfEmptyFields == countRevealedFields) {
+    // Ustavi timer in sprozi modalno okno za zmago
     $("#seconds").timer("pause");
     $('#gameWinModal').modal('show');
   }
 }
 
 function revealGame() {
+  // Odkrij vsa igralna polja
   for (var i = 0; i < gameFieldArray.length; i++) {
     for (var j = 0; j < gameFieldArray.length; j++) {
       var tmpField = $("#" + (i) + "_" + (j));
