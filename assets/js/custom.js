@@ -256,7 +256,7 @@ function gameLogic() {
       // Ce je kliknjeno polje bomba: Odkrij polje, ga pobarvaj rdece, Ustavi timer, Ter koncaj igro - prikazi modal window
       $(this).removeClass('table-background');
       $(this).find("span").removeClass('table-element');
-      $(this).css('background-color', 'red');
+      $(this).css('background-color', '#FF5A09');
       $("#seconds").timer("pause");
       $('#gameOverModal').modal('show');
     } else if (gameFieldArray[x][y] == "number") {
@@ -379,6 +379,7 @@ function revealGame() {
       var tmpField = $("#" + (i) + "_" + (j));
       tmpField.removeClass('table-background');
       tmpField.find("span").removeClass('table-element');
+      tmpField.find('.flag-field-selector').remove();
     }
   }
 }
