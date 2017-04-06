@@ -64,6 +64,7 @@ $(document).ready(function () {
 });
 
 function createHTMLTable() {
+  var isTouchDevice = 'ontouchstart' in document.documentElement;
   // Ustvari Html tabelo 8x8
   var body = document.getElementById('tableWrapper');
   var table = document.createElement('table');
@@ -79,10 +80,17 @@ function createHTMLTable() {
           // vedeli na kateri celici smo oz katero celico je uporabnik kliknil
           td.className = "table-background";
           td.id = x + "_" + y;
-          // Dodaj event click(levi) ki bo sprozil klic funkcije gameLogic() na td
-          td.addEventListener("click", gameLogic);
-          // Dodaj event contextmenu(desni click) ki bo sprozil klic funkcije setTheFlag na td
-          td.addEventListener("contextmenu", setTheFlag);
+          if (isTouchDevice == true) {
+            
+            td.addEventListener("dblclick", gameLogic);
+
+            td.addEventListener("click", setTheFlag);
+          } else {
+            // Dodaj event click(levi) ki bo sprozil klic funkcije gameLogic() na td
+            td.addEventListener("click", gameLogic);
+            // Dodaj event contextmenu(desni click) ki bo sprozil klic funkcije setTheFlag na td
+            td.addEventListener("contextmenu", setTheFlag);
+          }
           span.className = "table-element";
           tr.appendChild(td);
           td.appendChild(span);
