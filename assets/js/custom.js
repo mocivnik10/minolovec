@@ -47,6 +47,7 @@ $(document).ready(function () {
       // Na click zazeni igro - ce je gameStarted false
       if (!gameStarted) {
         gameStarted = true;
+        // Jquery timer plugin: https://github.com/walmik/timer.jquery
         $("#seconds").timer();
         createHTMLTable();
         if (!debugMode) {
