@@ -1,6 +1,17 @@
 body#my_body {
 	font-family: 'Open Sans', sans-serif;
+	background-color: #393939;
 }
+
+/*
+COLORS
+Main: #393939
+Orange: #FF5A09
+Orange2: #F3843E
+Orange3: #FF9900
+Grey: #6E6E6E
+*/
+
 
 /*--------- Margin and Paddings shortcuts ---------*/
 .mt-s {margin-top: 20px;}
@@ -21,18 +32,24 @@ body#my_body {
 
 /*--------- Table for the game ---------*/
 .minesweeper_field_table, td, th {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   margin: 0 auto;
 }
 .minesweeper_field_table td {
+	border-radius: 50%;
+	box-shadow: 5px 5px 2px #6E6E6E;
   height: 49px;
   width: 49px;
+	color: #F3843E;
+	-ms-transform: rotate(45deg);
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 .table-element {
 	visibility: hidden;
 }
 .table-background {
-	background-color: lightblue;
+	background-color: #F3843E;
 }
 
 
@@ -40,10 +57,17 @@ body#my_body {
 
 /*--------- icons ---------*/
 .fa-circle {
-  color: yellow !important;
+  color: white !important;
 }
 .fa-inverse {
-  color: black !important;
+  color: #6E6E6E !important;
+}
+.fa-flag {
+	color: white;
+	padding-left: 10px;
+}
+.fa-bomb {
+	color: white;
 }
 /*--------- end ---------*/
 
@@ -55,16 +79,28 @@ body#my_body {
   margin: 0;
 }
 .game_header {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
+	background-color: #F3843E;
+	color: white;
+	box-shadow: 10px 10px 5px #6E6E6E;
   padding: 20px;
 }
 .smiley_box {
-	border: 1px solid black;
+	/*border: 1px solid black;*/
 	padding: 10px;
 }
 .counter_boxes {
-  border: 1px solid black;
+  /*border: 1px solid black;*/
   padding: 10px;
   font-size: 28px;
+}
+.main-header {
+	color: white;
+}
+#tableWrapper {
+	-ms-transform: rotate(7deg);
+	-webkit-transform: rotate(7deg);
+	transform: rotate(-45deg);
+	margin-top: 75px;
 }
 /*--------- end ---------*/
