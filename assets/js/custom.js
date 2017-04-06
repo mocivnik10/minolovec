@@ -276,11 +276,11 @@ function clearEmptyFields(i, j) {
       if(x !== i || y !== j) {
         if (gameFieldVisited[x][y] != true) {
           var tmpField = $("#" + (x) + "_" + (y));
-          if (gameFieldArray[x][y] == "number") {
+          if (gameFieldArray[x][y] == "number" && gameFieldFlaged[x][y] !== true) {
             gameFieldVisited[x][y] = true;
             tmpField.removeClass('table-background');
             tmpField.find("span").removeClass('table-element');
-          } else if (gameFieldArray[x][y] == "empty") {
+          } else if (gameFieldArray[x][y] == "empty" && gameFieldFlaged[x][y] !== true) {
             tmpField.removeClass('table-background');
             tmpField.find("span").removeClass('table-element');
             clearEmptyFields(x, y);
@@ -297,19 +297,19 @@ function setTheFlag() {
   x = clickedPositionArr[0];
   y = clickedPositionArr[1];
   var flagField = $("#" + (x) + "_" + (y));
-  console.log(flagField);
-  //gameFieldVisited[x][y] = true;
-  if (gameFieldFlaged[x][y] == true) {
-    gameFieldFlaged[x][y] = false;
-    flagCounter++;
-    $(".flags_counter").children().text(flagCounter);
-    flagField.find('.flag-field-selector').remove();
-  } else {
-    gameFieldFlaged[x][y] = true;
-    flagCounter--;
-    $(".flags_counter").children().text(flagCounter);
-    flagField.click(function(){return false;});
-    flagField.prepend('<span class="flag-field-selector"><i class="fa fa-flag" aria-hidden="true"></i></span>');
+  if (gameFieldVisited[x][y] !== true) {
+    if (gameFieldFlaged[x][y] == true) {
+      gameFieldFlaged[x][y] = false;
+      flagCounter++;
+      $(".flags_counter").children().text(flagCounter);
+      flagField.find('.flag-field-selector').remove();
+    } else {
+      gameFieldFlaged[x][y] = true;
+      flagCounter--;
+      $(".flags_counter").children().text(flagCounter);
+      flagField.click(function(){return false;});
+      flagField.prepend('<span class="flag-field-selector"><i class="fa fa-flag" aria-hidden="true"></i></span>');
+    }
   }
   checkWin();
 }
