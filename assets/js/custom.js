@@ -49,6 +49,7 @@ $(document).ready(function () {
         gameStarted = true;
         // Jquery timer plugin: https://github.com/walmik/timer.jquery
         $("#seconds").timer();
+        $("#want_to_play").hide();
         createHTMLTable();
         if (!debugMode) {
           randomBombs();
