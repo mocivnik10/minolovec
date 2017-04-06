@@ -16,39 +16,45 @@ var gameFieldVisited = [ [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ] ];
 
+var gameFieldFlaged = [ [ [], [], [], [], [], [], [], [] ],
+                      [ [], [], [], [], [], [], [], [] ],
+                      [ [], [], [], [], [], [], [], [] ],
+                      [ [], [], [], [], [], [], [], [] ],
+                      [ [], [], [], [], [], [], [], [] ],
+                      [ [], [], [], [], [], [], [], [] ],
+                      [ [], [], [], [], [], [], [], [] ],
+                      [ [], [], [], [], [], [], [], [] ] ];
+
+
 var debugMode = false;
+var gameStarted = false;
 
 for (var i = 0; i < gameFieldVisited.length; i++) {
   for (var y = 0; y < gameFieldVisited[i].length; y++) {
     gameFieldVisited[i][y] = false;
   }
 }
+for (var i = 0; i < gameFieldFlaged.length; i++) {
+  for (var y = 0; y < gameFieldFlaged[i].length; y++) {
+    gameFieldFlaged[i][y] = false;
+  }
+}
 
 $(document).ready(function () {
-  createHTMLTable();
-  $("#start_game").click(function () {
-      var clicks = $(this).data('clicks');
-      span = document.getElementById('seconds');
-      var counter = 0;
-      // Zazeni igro
-      if (!clicks) {
-          countingInterval = setInterval(function() {
-          counter++;
-          span.innerHTML = counter;
-        },1000);
+  $("#start_game, #start_game_from_modal").click(function () {
+      if (!gameStarted) {
+        gameStarted = true;
+        $("#seconds").timer();
+        createHTMLTable();
         if (!debugMode) {
           randomBombs();
         } else {
           debugModeBombs();
         }
         numberOfBombs();
-      // Ustavi/Prekini igro
       } else {
-        // clearInterval(countingInterval);
-        // span.innerHTML = "00";
         location.reload();
       }
-      $(this).data("clicks", !clicks);
   });
 });
 
@@ -70,7 +76,7 @@ function createHTMLTable() {
           td.id = x + "_" + y;
           // Dodaj event click ki bo sprozil klic funkcije gameLogic() na td
           td.addEventListener("click", gameLogic);
-          //td.addEventListener("contextmenu", setTheFlag);
+          td.addEventListener("contextmenu", setTheFlag);
           span.className = "table-element";
           tr.appendChild(td);
           td.appendChild(span);
@@ -231,47 +237,53 @@ function gameLogic() {
   clickedPositionArr = $(this).attr("id").split("_");
   x = clickedPositionArr[0];
   y = clickedPositionArr[1];
-  gameFieldVisited[x][y] = true;
-  row = x + 1;
-  col = y + 1;
-  if (gameFieldArray[x][y] == "bomb") {
-    $(this).removeClass('table-background');
-    $(this).find("span").removeClass('table-element');
-    $(this).css('background-color', 'red');
-    console.log("game over");
-  } else if (gameFieldArray[x][y] == "number") {
-    $(this).removeClass('table-background');
-    $(this).find("span").removeClass('table-element');
-    console.log("number clicked");
+  if (gameFieldFlaged[x][y] == true) {
+    return;
   } else {
-    console.log("clicked: " + x + " " + y);
-    $(this).removeClass('table-background');
-    $(this).find("span").removeClass('table-element');
-    findingNeighbors(Number(x), Number(y));
+    gameFieldVisited[x][y] = true;
+    row = x + 1;
+    col = y + 1;
+    if (gameFieldArray[x][y] == "bomb") {
+      $(this).removeClass('table-background');
+      $(this).find("span").removeClass('table-element');
+      $(this).css('background-color', 'red');
+      $("#seconds").timer("pause");
+      $('#gameOverModal').modal('show');
+      console.log("game over");
+    } else if (gameFieldArray[x][y] == "number") {
+      $(this).removeClass('table-background');
+      $(this).find("span").removeClass('table-element');
+      console.log("number clicked");
+    } else {
+      console.log("clicked: " + x + " " + y);
+      $(this).removeClass('table-background');
+      $(this).find("span").removeClass('table-element');
+      clearEmptyFields(Number(x), Number(y));
+    }
   }
+  checkWin();
 }
 
-function findingNeighbors(i, j) {
+function clearEmptyFields(i, j) {
   var rowLimit = gameFieldArray.length-1;
   var columnLimit = gameFieldArray[0].length-1;
   if (!isIndexInArray(i, j)) {
     return;
   }
-  console.log("Iscem sosede za: " + i + " " + j);
   gameFieldVisited[i][j] = true;
-
   for(var x = Math.max(0, i-1); x <= Math.min(i+1, rowLimit); x++) {
     for(var y = Math.max(0, j-1); y <= Math.min(j+1, columnLimit); y++) {
       if(x !== i || y !== j) {
         if (gameFieldVisited[x][y] != true) {
           var tmpField = $("#" + (x) + "_" + (y));
           if (gameFieldArray[x][y] == "number") {
+            gameFieldVisited[x][y] = true;
             tmpField.removeClass('table-background');
             tmpField.find("span").removeClass('table-element');
           } else if (gameFieldArray[x][y] == "empty") {
             tmpField.removeClass('table-background');
             tmpField.find("span").removeClass('table-element');
-            findingNeighbors(x, y);
+            clearEmptyFields(x, y);
           }
         }
       }
@@ -279,12 +291,74 @@ function findingNeighbors(i, j) {
   }
 }
 
+var flagCounter = 10;
+function setTheFlag() {
+  clickedPositionArr = $(this).attr("id").split("_");
+  x = clickedPositionArr[0];
+  y = clickedPositionArr[1];
+  var flagField = $("#" + (x) + "_" + (y));
+  console.log(flagField);
+  //gameFieldVisited[x][y] = true;
+  if (gameFieldFlaged[x][y] == true) {
+    gameFieldFlaged[x][y] = false;
+    flagCounter++;
+    $(".flags_counter").children().text(flagCounter);
+    flagField.find('.flag-field-selector').remove();
+  } else {
+    gameFieldFlaged[x][y] = true;
+    flagCounter--;
+    $(".flags_counter").children().text(flagCounter);
+    flagField.click(function(){return false;});
+    flagField.prepend('<span class="flag-field-selector"><i class="fa fa-flag" aria-hidden="true"></i></span>');
+  }
+  checkWin();
+}
 
-//// function setTheFlag() {
-//   clickedPositionArr = $(this).attr("id").split("_");
-//   x = clickedPositionArr[0];
-//   y = clickedPositionArr[1];
-//   var flagField = $("#" + (x) + "_" + (y));
-//   gameFieldVisited[x][y] = true;
-//   flagField.prepend('<i class="fa fa-flag" aria-hidden="true"></i>');
-// }
+function checkWin() {
+  var numberOfBombs = 0;
+  var numberOfEmptyFields = 0;
+  var countFlagedBombs = 0;
+  var countRevealedFields = 0;
+  for (var i = 0; i < gameFieldArray.length; i++) {
+    for (var j = 0; j < gameFieldArray[i].length; j++) {
+      if (gameFieldArray[i][j] == "bomb") {
+        numberOfBombs++;
+      }
+      if (gameFieldArray[i][j] == "empty" || gameFieldArray[i][j] == "number") {
+        numberOfEmptyFields++;
+      }
+    }
+  }
+  for (var i = 0; i < gameFieldFlaged.length; i++) {
+    for (var j = 0; j < gameFieldFlaged[i].length; j++) {
+      if (gameFieldFlaged[i][j] == true && gameFieldArray[i][j] == "bomb") {
+        countFlagedBombs++;
+      }
+    }
+  }
+  for (var i = 0; i < gameFieldVisited.length; i++) {
+    for (var j = 0; j < gameFieldVisited[i].length; j++) {
+      if (gameFieldVisited[i][j] == true) {
+        countRevealedFields++;
+      }
+    }
+  }
+  console.log("Bombs: " + numberOfBombs);
+  console.log("Empty fields: " + numberOfEmptyFields);
+  console.log("Flaged: " + countFlagedBombs);
+  console.log("Revealed: " + countRevealedFields);
+  if (numberOfBombs == countFlagedBombs && numberOfEmptyFields == countRevealedFields) {
+    $("#seconds").timer("pause");
+    $('#gameWinModal').modal('show');
+  }
+}
+
+function revealGame() {
+  for (var i = 0; i < gameFieldArray.length; i++) {
+    for (var j = 0; j < gameFieldArray.length; j++) {
+      var tmpField = $("#" + (i) + "_" + (j));
+      tmpField.removeClass('table-background');
+      tmpField.find("span").removeClass('table-element');
+    }
+  }
+}
