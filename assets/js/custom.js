@@ -64,7 +64,6 @@ $(document).ready(function () {
 });
 
 function createHTMLTable() {
-  var isTouchDevice = 'ontouchstart' in document.documentElement;
   // Ustvari Html tabelo 8x8
   var body = document.getElementById('tableWrapper');
   var table = document.createElement('table');
@@ -75,25 +74,18 @@ function createHTMLTable() {
       var tr = document.createElement('tr');
       for (var y = 0; y < 8; y++) {
           var td = document.createElement('td');
-          var span = document.createElement('span');
+          var p = document.createElement('p');
           // Dodaj class(za css styling) ter ID da bomo kasneje glede na id
           // vedeli na kateri celici smo oz katero celico je uporabnik kliknil
           td.className = "table-background";
           td.id = x + "_" + y;
-          if (isTouchDevice == true) {
-            
-            td.addEventListener("dblclick", gameLogic);
-
-            td.addEventListener("click", setTheFlag);
-          } else {
-            // Dodaj event click(levi) ki bo sprozil klic funkcije gameLogic() na td
-            td.addEventListener("click", gameLogic);
-            // Dodaj event contextmenu(desni click) ki bo sprozil klic funkcije setTheFlag na td
-            td.addEventListener("contextmenu", setTheFlag);
-          }
-          span.className = "table-element";
+          // Dodaj event click(levi) ki bo sprozil klic funkcije gameLogic() na td
+          td.addEventListener("click", gameLogic);
+          // Dodaj event contextmenu(desni click) ki bo sprozil klic funkcije setTheFlag na td
+          td.addEventListener("contextmenu", setTheFlag);
+          p.className = "table-element no-padding no-margin";
           tr.appendChild(td);
-          td.appendChild(span);
+          td.appendChild(p);
       }
       tbdy.appendChild(tr);
   }
@@ -253,6 +245,7 @@ function gameLogic() {
   // inicializacija x in y
   x = clickedPositionArr[0];
   y = clickedPositionArr[1];
+  var clickedField = $("#" + (x) + "_" + (y));
   if (gameFieldFlaged[x][y] == true) {
     // Onemogoci klik na polje z zastavico
     return;
@@ -264,18 +257,18 @@ function gameLogic() {
     if (gameFieldArray[x][y] == "bomb") {
       // Ce je kliknjeno polje bomba: Odkrij polje, ga pobarvaj rdece, Ustavi timer, Ter koncaj igro - prikazi modal window
       $(this).removeClass('table-background');
-      $(this).find("span").removeClass('table-element');
+      $(this).find("p").removeClass('table-element');
       $(this).css('background-color', '#FF5A09');
       $("#seconds").timer("pause");
       $('#gameOverModal').modal('show');
     } else if (gameFieldArray[x][y] == "number") {
       // Ce je kliknjeno polje stevilke - potem to polje odkrij
       $(this).removeClass('table-background');
-      $(this).find("span").removeClass('table-element');
+      $(this).find("p").removeClass('table-element');
     } else {
       // Ceje kliknjeno prazno polje ga odkrij in pozeni funkcijo clearEmptyFields, ki bo odkrila se ostala prazna polja
       $(this).removeClass('table-background');
-      $(this).find("span").removeClass('table-element');
+      $(this).find("p").removeClass('table-element');
       clearEmptyFields(Number(x), Number(y));
     }
   }
@@ -303,11 +296,11 @@ function clearEmptyFields(i, j) {
             // Ce je polje, ki se trenutno preverja stevilka in na tem polju ni zastavice potem: Nastavi polje kot obiskano in ga odrij
             gameFieldVisited[x][y] = true;
             tmpField.removeClass('table-background');
-            tmpField.find("span").removeClass('table-element');
+            tmpField.find("p").removeClass('table-element');
           } else if (gameFieldArray[x][y] == "empty" && gameFieldFlaged[x][y] !== true) {
             // Ce je polje, ki se trenutno preverja prazno in na tem polju ni zastavice potem: Polje odkrij, in rekurzivno klici metodo clearEmptyFields.
             tmpField.removeClass('table-background');
-            tmpField.find("span").removeClass('table-element');
+            tmpField.find("p").removeClass('table-element');
             clearEmptyFields(x, y);
           }
         }
@@ -337,7 +330,7 @@ function setTheFlag() {
       flagCounter--;
       $(".flags_counter").children().text(flagCounter);
       flagField.click(function(){return false;});
-      flagField.prepend('<span class="flag-field-selector"><i class="fa fa-flag" aria-hidden="true"></i></span>');
+      flagField.prepend('<p class="flag-field-selector no-padding no-margin"><i class="fa fa-flag" aria-hidden="true"></i></p>');
     }
   }
   checkWin();
@@ -387,7 +380,7 @@ function revealGame() {
     for (var j = 0; j < gameFieldArray.length; j++) {
       var tmpField = $("#" + (i) + "_" + (j));
       tmpField.removeClass('table-background');
-      tmpField.find("span").removeClass('table-element');
+      tmpField.find("p").removeClass('table-element');
       tmpField.find('.flag-field-selector').remove();
     }
   }
