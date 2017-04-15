@@ -107,50 +107,36 @@ function debugModeBombs() {
   x = 0;
   y = 3;
   gameFieldArray[x][y] = "bomb";
-  row = x + 1;
-  col = y + 1;
   var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 3;
   y = 4;
   gameFieldArray[x][y] = "bomb";
-  row = x + 1;
-  col = y + 1;
   var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 2;
   y = 6;
   gameFieldArray[x][y] = "bomb";
-  row = x + 1;
-  col = y + 1;
   var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 4;
   y = 0;
   gameFieldArray[x][y] = "bomb";
-  row = x + 1;
-  col = y + 1;
   var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 1;
   y = 5;
   gameFieldArray[x][y] = "bomb";
-  row = x + 1;
-  col = y + 1;
   var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 6;
   y = 3;
   gameFieldArray[x][y] = "bomb";
-  row = x + 1;
-  col = y + 1;
   var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
   x = 4;
   y = 2;
   gameFieldArray[x][y] = "bomb";
-  row = x + 1;
-  col = y + 1;
   var tmpBombField = $("#" + (x) + "_" + (y));
   tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
 }
@@ -166,11 +152,8 @@ function randomBombs() {
     if (gameFieldArray[tmpIndexNumber1][tmpIndexNumber2] !== "bomb") {
       // v array gameFieldArray dodaj na generirano pozicijo "bombo"
       gameFieldArray[tmpIndexNumber1][tmpIndexNumber2] = "bomb";
-      // nastavi si vrstico in stolpec (za HTMl tabelo)
-      row = tmpIndexNumber1 + 1;
-      col = tmpIndexNumber2 + 1;
       // inicializacija polja z bombo
-      tmpBombField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
+      tmpBombField = $("#" + (tmpIndexNumber1) + "_" + (tmpIndexNumber2)).children();
       // polju pripni bombo vizualno kot ikono
       tmpBombField.prepend('<i class="fa fa-bomb bomb" aria-hidden="true"></i>');
       i++;
@@ -216,20 +199,15 @@ function numberOfBombs() {
             tmpCountBombs ++;
           }
 
-          row = x + 1;
-          col = y + 1;
           // inicializacija polja s stevilko
-          tmpNumberField = $(".minesweeper_field_table > tr:nth-child("+row+") > td:nth-child("+col+")").children();
-          // v polja, ki imajo na sosednjih poljih bombe pripni st bomb ter dodaj class "number"
-          // Ostalim pa samo dodaj class "empty"
+          tmpNumberField = $("#" + (x) + "_" + (y)).children();
+          // v polja, ki imajo na sosednjih poljih bombe pripni st bomb
           if (tmpCountBombs !== 0) {
             // V array na polje iz for zanke vstavimo stevilo bomb na sosednjih poljih
             gameFieldArray[x][y] = "number";
             tmpNumberField.prepend(tmpCountBombs);
-            tmpNumberField.addClass("number");
           } else {
             gameFieldArray[x][y] = "empty";
-            tmpNumberField.addClass("empty");
           }
         }
       }
@@ -252,8 +230,6 @@ function gameLogic() {
   } else {
     // Nastavi kliknjeno polje kot obiskano/odkrito
     gameFieldVisited[x][y] = true;
-    row = x + 1;
-    col = y + 1;
     if (gameFieldArray[x][y] == "bomb") {
       // Ce je kliknjeno polje bomba: Odkrij polje, ga pobarvaj rdece, Ustavi timer, Ter koncaj igro - prikazi modal window
       $(this).removeClass('table-background');
