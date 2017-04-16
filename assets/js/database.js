@@ -17,12 +17,15 @@ $(document).ready(function() {
 
     // Prikazi/Narisi HTML tabelo za scoreboard od najnizjega do najvisjega
     var tablerow = '';
+    var playerCount = 1;
     for (var i = 0; i < playersArr.length; i++) {
       tablerow += '<tr>'
+      tablerow += '<td>' + playerCount + '</td>';
       for (var j = 0; j < playersArr[i].length; j++) {
         tablerow += '<td>' + playersArr[i][j] + '</td>';
       }
       tablerow += '</tr>'
+      playerCount++;
     }
     $("#score_table_body").prepend(tablerow);
   });
