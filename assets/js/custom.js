@@ -27,7 +27,7 @@ var gameFieldFlaged = [ [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ] ];
 
 
-var debugMode = false;
+var debugMode = true;
 var gameStarted = false;
 
 // Nastavi vsa polja v arrayih na false
@@ -347,7 +347,16 @@ function checkWin() {
     // Ustavi timer in sprozi modalno okno za zmago
     $("#seconds").timer("pause");
     $('#gameWinModal').modal('show');
+    $('#score_submitted').hide();
   }
+}
+
+function submitScore() {
+  var player_name = $('#player_name').val();
+  var score = $("#seconds").data('seconds');
+  $(".submit_player_score_form").remove();
+  $('#score_submitted').show();
+  savePlayerToDatabase(player_name, score);
 }
 
 function revealGame() {
