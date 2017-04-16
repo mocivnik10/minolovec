@@ -27,7 +27,7 @@ var gameFieldFlaged = [ [ [], [], [], [], [], [], [], [] ],
                       [ [], [], [], [], [], [], [], [] ] ];
 
 
-var debugMode = true;
+var debugMode = false;
 var gameStarted = false;
 
 // Nastavi vsa polja v arrayih na false
