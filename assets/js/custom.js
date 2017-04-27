@@ -67,7 +67,7 @@ function createHTMLTable() {
   // Ustvari Html tabelo 8x8
   var body = document.getElementById('tableWrapper');
   var table = document.createElement('table');
-  table.className = "text-center";
+  table.className = "text-center game-field-table";
   var tbdy = document.createElement('tbody');
   tbdy.className = "minesweeper_field_table";
   for (var x = 0; x < 8; x++) {
